@@ -1,10 +1,3 @@
-.env example:
-API_TOKEN = code
-
-
-pip exapmle:
-pip install pydub python-dotenv telebot SpeechRecognition
-
 # TG AI Assistant
 
 Voice bot Telegram assistant that uses AI to work with APIs of other applications
