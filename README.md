@@ -15,10 +15,9 @@ Voice bot Telegram assistant that uses AI to work with APIs of other application
    pip install pydub python-dotenv telebot SpeechRecognition
    ```
 
-3. Create a `.env` file based on the example:
-   ```
-   API_TOKEN=your_telegram_bot_token_here
-   ```
+3. Create a `.env` with `.env.example`:
+
+4. Change `docker-compose.yml`. Optional
 
 ## Dependencies
 
