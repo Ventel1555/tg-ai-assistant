@@ -12,7 +12,7 @@ Voice bot Telegram assistant that uses AI to work with APIs of other application
 
 2. Install required dependencies:
    ```bash
-   pip install pydub python-dotenv telebot SpeechRecognition
+   pip install -r requirements.txt
    ```
 
 3. Create a `.env` with `.env.example`:
@@ -21,8 +21,8 @@ Voice bot Telegram assistant that uses AI to work with APIs of other application
 
 ## Dependencies
 
-- Python 3.7+
+- Python 3.12
 - pydub
 - python-dotenv
-- telebot
+- aiogram
 - SpeechRecognition
