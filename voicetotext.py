@@ -3,6 +3,7 @@ import logging
 import os
 import sys
 import tempfile
+from dotenv import load_dotenv
 import speech_recognition as sr
 from pydub import AudioSegment
 from aiogram import F, Bot, Dispatcher, types
@@ -10,6 +11,7 @@ from aiogram.filters import CommandStart
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 
+load_dotenv()
 # Инициализация проекта
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 dp = Dispatcher()

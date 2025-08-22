@@ -14,10 +14,20 @@ Voice bot Telegram assistant that uses AI to work with APIs of other application
    ```bash
    pip install -r requirements.txt
    ```
+if not work:
+   ```bash
+   pip install aiogram speechrecognition pydub python-dotenv
+   ```
 
-3. Create a `.env` with `.env.example`:
+3. Create a `.env` with `.env.example` for BOT_TOKEN in @BotFather:
 
 4. Change `docker-compose.yml`. Optional
+without docker:
+   ```bash
+   sudo apt-get update 
+   sudo apt-get install -y ffmpeg 
+   sudo rm -rf /var/lib/apt/lists/*
+   ```
 
 ## Dependencies
 
