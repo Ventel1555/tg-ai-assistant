@@ -7,11 +7,13 @@ from aiogram.filters import CommandStart
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 
-from stt import process_text
+from stt import handle_oauth_callback, process_text
 
 load_dotenv()
 # Инициализация проекта
 BOT_TOKEN = os.getenv("BOT_TOKEN")
+REDIRECT_URI = os.getenv("REDIRECT_URI")
+bot = Bot(token=BOT_TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 dp = Dispatcher()
 
 # Обработчик команды /start
@@ -47,18 +49,10 @@ async def handle_voice(message: types.Message, bot: Bot) -> None:
             try:
                 # Google Speech Recognition и SpaCy
                 text = recognizer.recognize_google(audio_data, language="ru-RU")
-                
-                # Извлекаем намерение
-                result = process_text(text)  # Новая функция из stt.py
-                
-                if result["intent"] == "create_reminder":
-                    params = result["parameters"]
-                    response = f"✅ Создаю напоминание: {params['title'] or 'Без названия'} в {params['datetime'] or 'не указано'}"
-                    await message.reply(response)
-                else:
-                    await message.reply("🤔 Не понял, уточните, пожалуйста")
+                # Обработка текста
+                response = await process_text(text, message.from_user.id, bot, REDIRECT_URI)
+                await message.reply(response)
 
-                await message.reply(f"Распознанный текст:\n\n{text}")
             except sr.UnknownValueError:
                 await message.reply("Не удалось распознать речь. Попробуйте записать сообщение в более тихом месте.")
             except sr.RequestError as e:
@@ -78,15 +72,12 @@ async def handle_voice(message: types.Message, bot: Bot) -> None:
             except Exception as e:
                 logging.error(f"Ошибка при удалении файла {file_path}: {e}")
 
-# @dp.message(F.text)
-# async def handle_text(message: types.Message) -> None:
-#     await message.answer("Отправьте мне голосовое сообщение для распознавания текста.")
+@dp.message(F.text)
+async def handle_text(message: types.Message) -> None:
+    await message.answer("Отправьте мне голосовое сообщение для распознавания текста.")
 
-# Запуск бота
 async def main() -> None:
 
-    bot = Bot(token=BOT_TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
-    
     await bot.delete_webhook(drop_pending_updates=True)
     
     await dp.start_polling(bot)
@@ -100,5 +91,6 @@ if __name__ == "__main__":
     
     try:
         asyncio.run(main())
+
     except KeyboardInterrupt:
         logging.info("Бот остановлен")
