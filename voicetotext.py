@@ -1,8 +1,4 @@
-import asyncio
-import logging
-import os
-import sys
-import tempfile
+import asyncio, logging, os, sys, tempfile
 from dotenv import load_dotenv
 import speech_recognition as sr
 from pydub import AudioSegment
@@ -10,6 +6,8 @@ from aiogram import F, Bot, Dispatcher, types
 from aiogram.filters import CommandStart
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
+
+from stt import process_text
 
 load_dotenv()
 # Инициализация проекта
@@ -47,8 +45,19 @@ async def handle_voice(message: types.Message, bot: Bot) -> None:
             audio_data = recognizer.record(source)
             
             try:
-                # Используем Google Speech Recognition
+                # Google Speech Recognition и SpaCy
                 text = recognizer.recognize_google(audio_data, language="ru-RU")
+                
+                # Извлекаем намерение
+                result = process_text(text)  # Новая функция из stt.py
+                
+                if result["intent"] == "create_reminder":
+                    params = result["parameters"]
+                    response = f"✅ Создаю напоминание: {params['title'] or 'Без названия'} в {params['datetime'] or 'не указано'}"
+                    await message.reply(response)
+                else:
+                    await message.reply("🤔 Не понял, уточните, пожалуйста")
+
                 await message.reply(f"Распознанный текст:\n\n{text}")
             except sr.UnknownValueError:
                 await message.reply("Не удалось распознать речь. Попробуйте записать сообщение в более тихом месте.")
@@ -62,7 +71,6 @@ async def handle_voice(message: types.Message, bot: Bot) -> None:
         await message.reply("Произошла ошибка при обработке голосового сообщения.")
     
     finally:
-        # Удаляем временные файлы
         for file_path in [ogg_path, wav_path]:
             try:
                 if os.path.exists(file_path):

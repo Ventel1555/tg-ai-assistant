@@ -28,11 +28,15 @@ without docker:
    sudo apt-get install -y ffmpeg 
    sudo rm -rf /var/lib/apt/lists/*
    ```
-
+## Model for spacy
+   ```
+   spacy download ru_core_news_sm
+   ```
 ## Dependencies
 
 - Python 3.12
 - pydub
 - python-dotenv
 - aiogram
+- spacy
 - SpeechRecognition
