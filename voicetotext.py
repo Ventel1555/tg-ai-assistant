@@ -7,8 +7,6 @@ from aiogram.filters import CommandStart
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 
-from stt import handle_oauth_callback, process_text
-
 load_dotenv()
 # Инициализация проекта
 BOT_TOKEN = os.getenv("BOT_TOKEN")
@@ -49,9 +47,7 @@ async def handle_voice(message: types.Message, bot: Bot) -> None:
             try:
                 # Google Speech Recognition и SpaCy
                 text = recognizer.recognize_google(audio_data, language="ru-RU")
-                # Обработка текста
-                response = await process_text(text, message.from_user.id, bot, REDIRECT_URI)
-                await message.reply(response)
+                await message.reply(text)
 
             except sr.UnknownValueError:
                 await message.reply("Не удалось распознать речь. Попробуйте записать сообщение в более тихом месте.")
