@@ -1,0 +1,4 @@
+aiogram==3.13.1
+pydub==0.25.1
+python-dotenv==1.0.1
+SpeechRecognition==3.10.4
