@@ -1,6 +1,6 @@
-# TG AI Assistant
+# Voice to Text bot
 
-A Telegram voice bot that uses AI to process voice messages and interact with the Google Calendar API to create or delete events. 
+A Telegram voice bot that uses AI to process voice messages to text. 
 
 ## Prerequisites
 
