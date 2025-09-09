@@ -2,6 +2,7 @@
 __pycache__/
 *.py[codz]
 *$py.class
+users.db
 
 # For google cloude
 credentials.json
