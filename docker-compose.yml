@@ -1,9 +1,0 @@
-version: '3.8'
-
-services:
-  voice-bot:
-    build: .
-    container_name: tg-ai-assistent
-    env_file:
-      - .env
-    restart: unless-stopped
